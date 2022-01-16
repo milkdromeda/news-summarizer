@@ -1,10 +1,10 @@
 """
-Data preprocessing
+Make processed data into lists
 """
-import numpy as np
 import pandas as pd
 
 raw_df = pd.read_csv('news_summary_more.csv', encoding='iso-8859-1')
+# used raw but change code to processed csv
 listed_df = pd.DataFrame
 
 
