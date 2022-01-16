@@ -39,6 +39,11 @@ def lemmatizer(text):
     return lemm_text
 
 
+def remove_special(text):
+    return [char for char in text if char.isalnum() or char == ' ']
+
+
 raw_df['clean'] = raw_df['text'].apply(lambda x: clean_text(x))
-raw_df['token'] = raw_df['clean'].apply(lambda x: tokenise(x))
+raw_df['english'] = raw_df['clean'].apply(lambda x: remove_special(x))
+raw_df['token'] = raw_df['english'].apply(lambda x: tokenise(x))
 raw_df['lemma'] = raw_df['token'].apply(lambda x: lemmatizer(x))
