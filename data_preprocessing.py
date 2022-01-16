@@ -5,17 +5,18 @@
 import numpy as np
 import pandas as pd
 from nltk.tokenize import RegexpTokenizer
-from nltk.stem import WordNetLemmatizer, PorterStemmer
+from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 import re
 
-stemmer = PorterStemmer()
 
-raw_df = pd.read_csv('news_summary_more.csv', encoding='iso-8859-1')
-print(raw_df.head())
+# def main():
+#     """Carries out these actions if this file is the main file"""
 
 
-def clean_text(text):
+
+def clean_text(text: str) -> str:
+    """Return text with punctuation, whitespace and redundant characters removed."""
     text = text.lower()
     text = re.sub(r"[<>()|&©ø\[\]\'\",;?~*!]", ' ', str(text))  # removes unnecessary punctuation
 
@@ -27,23 +28,31 @@ def clean_text(text):
     return text
 
 
-def tokenise(text):
+def tokenise(text: str) -> list[str]:
+    """
+    Return text as a list form with each item in the list being a word.
+    """
     tokenizer = RegexpTokenizer(r'\w+')
     tokens = tokenizer.tokenize(text)
     return tokens
 
 
-def lemmatizer(text):
+def lemmatizer(text: list[str]) -> list[str]:
+    """Return the list of text with words lemmatized."""
     lemmatizer = WordNetLemmatizer()
     lemm_text = [lemmatizer.lemmatize(word) for word in text]
     return lemm_text
 
 
-def remove_special(text):
-    return [char for char in text if char.isalnum() or char == ' ']
+# def remove_special(text):
+#     """Return text with all non-alphanumeric characters removed."""
+#     return [char for char in text if char.isalnum() or char == ' ']
 
 
-raw_df['clean'] = raw_df['text'].apply(lambda x: clean_text(x))
-raw_df['english'] = raw_df['clean'].apply(lambda x: remove_special(x))
-raw_df['token'] = raw_df['english'].apply(lambda x: tokenise(x))
-raw_df['lemma'] = raw_df['token'].apply(lambda x: lemmatizer(x))
+if __name__ == '__main__':
+    raw_df = pd.read_csv('news_summary_more.csv', encoding='iso-8859-1')
+    print(raw_df.head())
+    raw_df['processed'] = raw_df['text'].apply(lambda x: clean_text(x))
+    # raw_df['processed'] = raw_df['processed'].apply(lambda x: remove_special(x))
+    raw_df['processed'] = raw_df['processed'].apply(lambda x: tokenise(x))
+    raw_df['processed'] = raw_df['processed'].apply(lambda x: lemmatizer(x))
