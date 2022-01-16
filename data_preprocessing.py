@@ -14,17 +14,13 @@ import re
 #     """Carries out these actions if this file is the main file"""
 
 
-
 def clean_text(text: str) -> str:
     """Return text with punctuation, whitespace and redundant characters removed."""
     text = text.lower()
-    text = re.sub(r"[<>()|&©ø\[\]\'\",;?~*!]", ' ', str(text))  # removes unnecessary punctuation
+    text = re.sub(r'[^\w\d\s\'\-]+', '', text)  # removes all punctuation except hyphen, apostrophe
 
-    text = re.sub(r"(\.\s+)", ' ', str(text))  # removes punctuation at end of words(not between)
-    text = re.sub(r"(\:\s+)", ' ', str(text))
-
-    text = re.sub(r"(\s+)", ' ', str(text))  # remove multiple spaces
-    text = re.sub(r"(\s+.\s+)", ' ', str(text))  # removes single characters between spaces
+    text = re.sub(r'(\s+)', ' ', text)  # remove multiple spaces
+    text = re.sub(r'(\s+.\s+)', ' ', text)  # removes single characters between spaces
     return text
 
 
