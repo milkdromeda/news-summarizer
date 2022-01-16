@@ -1,0 +1,5 @@
+1. upper/lower case: cleaned up to all lowercase for easy of training, but recognize the need of upercase in newspapaer article for names.
+2. url: none found.
+3. special/none english characters: removed
+4. punchuations: removed
+5. strucuture: made into lists
