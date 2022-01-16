@@ -8,7 +8,7 @@ from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer, PorterStemmer
 from nltk.corpus import stopwords
 import re
-lemmatizer = WordNetLemmatizer()
+
 stemmer = PorterStemmer()
 
 raw_df = pd.read_csv('news_summary_more.csv', encoding='iso-8859-1')
@@ -30,11 +30,15 @@ def clean_text(text):
 def tokenise(text):
     tokenizer = RegexpTokenizer(r'\w+')
     tokens = tokenizer.tokenize(text)
-    # filtered_words = [w for w in tokens if len(w) > 2 if w not in stopwords.words('english')]
-    # stem_words = [stemmer.stem(w) for w in filtered_words]
-    # lemma_words = [lemmatizer.lemmatize(w) for w in stem_words]
     return tokens
 
 
-raw_df['clean'] = raw_df["text"].apply(lambda x: clean_text(x))
+def lemmatizer(text):
+    lemmatizer = WordNetLemmatizer()
+    lemm_text = [lemmatizer.lemmatize(word) for word in text]
+    return lemm_text
+
+
+raw_df['clean'] = raw_df['text'].apply(lambda x: clean_text(x))
 raw_df['token'] = raw_df['clean'].apply(lambda x: tokenise(x))
+raw_df['lemma'] = raw_df['token'].apply(lambda x: lemmatizer(x))
