@@ -1,5 +1,5 @@
 numpy
 pandas
 nltk
-tensorflow
-re
+torch==1.10.1
+transformers==4.15.0
